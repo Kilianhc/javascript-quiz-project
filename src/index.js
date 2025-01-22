@@ -95,22 +95,23 @@ document.addEventListener("DOMContentLoaded", () => {
     
 
     // YOUR CODE HERE:
-    //
+    questionContainer.innerText = question.text;
     // 1. Show the question
     // Update the inner text of the question container element and show the question text
 
     
     // 2. Update the green progress bar
     // Update the green progress bar (div#progressBar) width so that it shows the percentage of questions answered
-    
-    progressBar.style.width = `65%`; // This value is hardcoded as a placeholder
+    const progressPercentage = (quiz.currentQuestionIndex / quiz.questions.length) * 100
+    progressBar.style.width = `${progressPercentage}%`; // This value is hardcoded as a placeholder
 
 
 
     // 3. Update the question count text 
     // Update the question count (div#questionCount) show the current question out of total questions
     
-    questionCount.innerText = `Question 1 of 10`; //  This value is hardcoded as a placeholder
+    questionCount.innerText = `Question ${quiz.currentQuestionIndex} of ${quiz.questions.length}`; //  This value is hardcoded as a placeholder
+
 
 
     
@@ -123,6 +124,18 @@ document.addEventListener("DOMContentLoaded", () => {
           <label>CHOICE TEXT HERE</label>
         <br>
       */
+    question.choices.forEach((choice) => {
+      const input = document.createElement("input")
+      const label = document.createElement("label")
+      const br = document.createElement("br")
+      label.innerText = choice
+      input.type = "radio"
+      input.name = "choice"
+      input.value = choice
+      choiceContainer.appendChild(br)
+      choiceContainer.appendChild(input)
+      choiceContainer.appendChild(label)
+     });
       // Hint 1: You can use the `document.createElement()` method to create a new element.
       // Hint 2: You can use the `element.type`, `element.name`, and `element.value` properties to set the type, name, and value of an element.
       // Hint 3: You can use the `element.appendChild()` method to append an element to the choices container.
@@ -140,6 +153,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // YOUR CODE HERE:
     //
     // 1. Get all the choice elements. You can use the `document.querySelectorAll()` method.
+    const allChoices = document.querySelectorAll(`input[name = "choice"]`)
+    allChoices.forEach((choice) => {
+    if(choice.checked) {
+      selectedAnswer = choice.value;
+    }
+    }) 
+    if (selectedAnswer) {
+      const isCorrect = quiz.checkAnswer(selectedAnswer)
+      quiz.moveToNextQuestion()
+      showQuestion()
+    }
 
 
     // 2. Loop through all the choice elements and check which one is selected
@@ -160,7 +184,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function showResults() {
 
     // YOUR CODE HERE:
-    //
+    let totalcorrect 
+
     // 1. Hide the quiz view (div#quizView)
     quizView.style.display = "none";
 
