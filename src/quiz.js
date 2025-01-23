@@ -26,8 +26,12 @@ class Quiz {
     }
     // 5. checkAnswer(answer)
     checkAnswer(answer) {
-        this.correctAnswers++
+        const currentQuestion = this.getQuestion();
+        if (currentQuestion.answer === answer) {
+            this.correctAnswers++;
+        }
     }
+
     // 6. hasEnded()
     hasEnded() {
         if (this.currentQuestionIndex === this.questions.length) return true
@@ -35,8 +39,8 @@ class Quiz {
     }
 
     filterQuestionsByDifficulty(difficulty) {
-        if (typeof difficulty !== "number" || difficulty <1 || difficulty >3) {return}
-        this.questions = this.questions.filter( question => question.difficulty === difficulty)
+        if (typeof difficulty !== "number" || difficulty < 1 || difficulty > 3) { return }
+        this.questions = this.questions.filter(question => question.difficulty === difficulty)
     }
 
     averageDifficulty() {
